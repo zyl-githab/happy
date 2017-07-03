@@ -24,4 +24,5 @@
 	<context:component-scan base-package="com.happy.business"/>
 	
 	<import resource="classpath*:spring-mybaties.xml"/>
+	<import resource="classpath:spring-redis.xml"/>
 </beans>
