@@ -10,35 +10,45 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.happy.business.User;
 import com.happy.business.service.UserService;
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiParam;
 
 /**
  * 
  * @author Administrator
  *
  */
+@Api(value="user-api",description="有关于用户的CURD操作")
 @Controller
 @RequestMapping("/user")
 public class UserController {
 	private final static Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 	@Autowired
 	private UserService userService;
-
+	
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
-	public ModelAndView getUserAll(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+	@ApiOperation(value="获取所有用户",notes = "返回用户实体对象集合")
+	@ResponseBody
+	public Object getUserAll() throws ServletException, IOException {
 		List<User> selectAll = userService.selectAll();
 		for (User user : selectAll) {
 			System.out.println(user.toString());
-			LOGGER.debug(user.toString());
+			 LOGGER.debug(user.toString());
 		}
-		ModelAndView model = new ModelAndView("success");
-		model.addObject("userAll", selectAll);
-		return model;
+		return selectAll;
 	}
+	
+	
 }
